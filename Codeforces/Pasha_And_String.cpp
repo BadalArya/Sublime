@@ -1,4 +1,11 @@
-//This code been written by: Badal
+// ============================================================================ //
+// ||                                                                        || //
+// ||                    Bhagalpur College of Engineering                    || //
+// ||                              Badal Kumar                               || //
+// ||                                2020-24                                 || //
+// ||                                                                        || //
+// ============================================================================ //
+
 #include <iostream>
 #include <algorithm>
 #include <vector>
@@ -12,8 +19,11 @@
 #include <iomanip>
 #include <cstring>
 #include <math.h>
+#include <numeric>
 
 using namespace std;
+
+//--------------------------------------------------------------------------------------------------------------------------------------
 
 #define MOD 1e9+7
 #define Badal cin.sync_with_stdio(false); cin.tie(0); cout.tie(0)
@@ -33,7 +43,8 @@ using namespace std;
 #define mxe(v)  *max_element(v.begin(),v.end())     // find max element in vector
 #define mne(v)  *min_element(v.begin(),v.end())     // find min element in vector
 #define unq(v)  v.resize(distance(v.begin(), unique(v.begin(), v.end())));
-// make sure to sort before applying unique // else only consecutive duplicates would be removed
+
+//--------------------------------------------------------------------------------------------------------------------------------------
 
 uint power(int x, int y, int p =  MOD){
     unsigned long long res = 1;
@@ -50,11 +61,13 @@ uint power(int x, int y, int p =  MOD){
     return res;
 }
 
-// =============================================================================================================
+//--------------------------------------------------------------------------------------------------------------------------------------
+
 uint modInverse(int n, int p=MOD){       // using fermats little thm. [p needs to be prime which is mostly the case as mod value generally is 1e9+7]
     return power(n, p - 2, p);
 }
-// can also derive this using extended euclidean... however this has a much simpler code....
+
+//--------------------------------------------------------------------------------------------------------------------------------------
 
 uint nCr(int n, int r, int p=MOD){     // faster calculation..
     if (n < r)
@@ -71,47 +84,41 @@ uint nCr(int n, int r, int p=MOD){     // faster calculation..
     return (fac[n] * modInverse(fac[r], p) % p * modInverse(fac[n - r], p) % p) % p;
 }
 
-// ================================== take ip/op like vector,pairs directly!==================================
+//--------------------------------------------------------------------------------------------------------------------------------------
+
 template<typename typC,typename typD> istream &operator>>(istream &cin,pair<typC,typD> &a) { return cin>>a.first>>a.second; }
 template<typename typC> istream &operator>>(istream &cin,vector<typC> &a) { for (auto &x:a) cin>>x; return cin; }
 template<typename typC,typename typD> ostream &operator<<(ostream &cout,const pair<typC,typD> &a) { return cout<<a.first<<' '<<a.second; }
 template<typename typC,typename typD> ostream &operator<<(ostream &cout,const vector<pair<typC,typD> > &a) { for (auto &x:a) cout<<x<<endl; return cout; }
 template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a) { int n=a.size(); if (!n) return cout; cout<<a[0]; for (int i=1; i<n; i++) cout<<' '<<a[i]; return cout; }
-// ===================================END Of the input module ==========================================
+
+//--------------------------------------------------------------------------------------------------------------------------------------
 
 void Solve(){
 	string s; cin >> s;
-	int n; cin >> n;
-	int arr[n];
-	for(int i = 0; i < n; i++){
-		cin >> arr[i];
-	}    
-	int len = s.size();
-	int change[len + 1] = {0};
+	int query; cin >> query;
 
-	for(int i = 0; i < n; i++){
-		arr[i]--;
-		change[arr[i]]++;
-		change[len - arr[i]]--;
+	int n = s.size();
+	int ans[n+1] = {0};
+	for(int i = 0; i < query; i++){
+		int idx; cin >> idx;
+		idx--;
+		ans[idx]++;
+	}    
+	for(int i = 1; i < n; i++){
+		ans[i] = ans[i-1]+ans[i];
 	}
-	for(int i = 1; i <= len; i++){
-		change[i] = change[i] + change[i-1];
-	}
-	
-	for(int i = 0; i <= len; i++){
-		if(change[i] % 2 == 1){
-			// cout << i << " ";
-			swap(s[i], s[len - 1 - i]);
-			change[i] = 0;
-			change[len - 1 - i] = 0;
+	for(int i = 0; i < n / 2; i++){
+		if(ans[i] % 2){
+			swap(s[i], s[n-i-1]);
 		}
 	}
 	cout << s << endl;
 }
 
 int32_t main (){
+    Badal;
     int tc = 1;
-    // cin >> tc;
     while (tc--){
         Solve();
     }

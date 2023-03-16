@@ -173,7 +173,7 @@ void Solve(){
 		int pos = 1;
 		
 		for(int i = 0; i < n; i++){
-			if(i ==pos || i == n / 2 - 1){
+			if(i ==pos || i == n / 2 - 1 || i == n - 1){
 				cout << "0";
 				continue;
 			}

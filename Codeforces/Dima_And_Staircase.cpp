@@ -80,24 +80,28 @@ template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a)
 // ===================================END Of the input module ==========================================
 
 void Solve(){
-	int n; cin >> n;
-	int a[n];
-	for(int i = 0; i < n; i++){
-		cin >> a[i];
-	}    
-	unordered_map<int,int> mp;
-	for(int i = 0; i < n; i++){
-		mp[i+1] = a[i];
-	}
-	int boxes; cin >> boxes;
-	while(boxes--){
-		
-	}
+    int n; cin >> n;
+    int a[n];
+    unordered_map<int,int> mp;
+    for(int i = 0; i < n; i++){
+        cin >> a[i];
+        mp[i+1] = a[i]; 
+    }    
+    // priority_queue<int> pq;
+    int maxm = INT_MIN;
+    int k; cin >> k;
+    // cout << "jns";
+    while(k--){
+        int w, h; cin >> w >> h;
+        int level = max(mp[w], maxm);
+        cout << level << endl;
+        maxm = max(level+h, maxm);
+    }
 }
 
 int32_t main (){
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     while (tc--){
         Solve();
     }
