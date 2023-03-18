@@ -99,41 +99,44 @@ template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a)
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 void Solve(){
-    int n; cin >> n;
-    vi a(n);
-    cin >> a;
-    srt(a);
+	int n, k; cin >> n >> k;
 
-    // We can select any number and I didn't read that
-    // So make a practice of first reading question carefully
+	// if(n <= k){
+	// 	cout << 1 << endl;
+	// 	return;
+	// }   
+	// if(n % 2 == 0 && k >= n / 2){
+	// 	cout << 2 << endl;
+	// 	return;
+	// }
 
-    int score = 0;
+	// if(k == 1){
+	// 	cout << n << endl;
+	// 	return;
+	// }
 
-    reverse(a.begin(), a.end());
+	// Divisors of a number
+	vector<int> ans;
+	for(int i = 1; i <= sqrt(n); i++){
+		if(n / i == i && n % i == 0){
+			ans.push_back(i);
+		}else if(n % i == 0){
+			ans.push_back(n / i);
+			ans.push_back(i);
+		}
+	}
 
-    for(int i = 0; i < n; i++){
-        if(i % 2 == 0){
-            if(a[i] % 2){
+	sort(ans.begin(), ans.end());
 
-            }else{
-                score += a[i];
-            }
-        }else{
-            if(a[i] % 2 == 0){
+	for(int i = 0; i < ans.size(); i++){
+		if((n / ans[i]) <= k){
+			cout << ans[i] << endl;
+			return;
+		}
+	}
+	cout << n << endl;
 
-            }else{
-                score -= a[i];
-            }
-        }
-    }
 
-    if(score > 0){
-        cout << "Alice" << endl;
-    }else if(score < 0){
-        cout << "Bob" << endl;
-    }else{
-        cout << "Tie" << endl;
-    }
 }
 
 int32_t main (){

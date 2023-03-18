@@ -98,48 +98,46 @@ template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a)
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
+int countSubsequence(string s){
+	int n = s.size();
+	int totalCount = 0;
+	int sCount = 0;
+	for(int i = 0; i < n; i++){
+		if(s[i] == 's'){
+			sCount++;
+		}else{
+			totalCount += sCount;
+		}
+	}
+
+	return totalCount;
+}
+
+bool compare(string s, string t){
+	return countSubsequence(s + t) > countSubsequence(t + s);
+}
+
 void Solve(){
-    int n; cin >> n;
-    vi a(n);
-    cin >> a;
-    srt(a);
+	int n; cin >> n;
+	string s[n];
+	for(int i = 0; i < n; i++){
+		cin >> s[i];
+	} 
 
-    // We can select any number and I didn't read that
-    // So make a practice of first reading question carefully
+	sort(s, s+n, compare);
 
-    int score = 0;
+	string finalString = ""; 
+	for(int i = 0; i < n; i++){
+		finalString += s[i];
+	}
 
-    reverse(a.begin(), a.end());
-
-    for(int i = 0; i < n; i++){
-        if(i % 2 == 0){
-            if(a[i] % 2){
-
-            }else{
-                score += a[i];
-            }
-        }else{
-            if(a[i] % 2 == 0){
-
-            }else{
-                score -= a[i];
-            }
-        }
-    }
-
-    if(score > 0){
-        cout << "Alice" << endl;
-    }else if(score < 0){
-        cout << "Bob" << endl;
-    }else{
-        cout << "Tie" << endl;
-    }
+	cout << countSubsequence(finalString) << endl;
 }
 
 int32_t main (){
     Badal;
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     while (tc--){
         Solve();
     }

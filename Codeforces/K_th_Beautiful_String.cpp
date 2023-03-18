@@ -90,50 +90,40 @@ uint nCr(int n, int r, int p=MOD){     // faster calculation..
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
-template<typename typC,typename typD> istream &operator>>(istream &cin,pair<typC,typD> &a) { return cin>>a.first>>a.second; }
-template<typename typC> istream &operator>>(istream &cin,vector<typC> &a) { for (auto &x:a) cin>>x; return cin; }
-template<typename typC,typename typD> ostream &operator<<(ostream &cout,const pair<typC,typD> &a) { return cout<<a.first<<' '<<a.second; }
-template<typename typC,typename typD> ostream &operator<<(ostream &cout,const vector<pair<typC,typD> > &a) { for (auto &x:a) cout<<x<<endl; return cout; }
-template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a) { int n=a.size(); if (!n) return cout; cout<<a[0]; for (int i=1; i<n; i++) cout<<' '<<a[i]; return cout; }
+// template<typename typC,typename typD> istream &operator>>(istream &cin,pair<typC,typD> &a) { return cin>>a.first>>a.second; }
+// template<typename typC> istream &operator>>(istream &cin,vector<typC> &a) { for (auto &x:a) cin>>x; return cin; }
+// template<typename typC,typename typD> ostream &operator<<(ostream &cout,const pair<typC,typD> &a) { return cout<<a.first<<' '<<a.second; }
+// template<typename typC,typename typD> ostream &operator<<(ostream &cout,const vector<pair<typC,typD> > &a) { for (auto &x:a) cout<<x<<endl; return cout; }
+// template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a) { int n=a.size(); if (!n) return cout; cout<<a[0]; for (int i=1; i<n; i++) cout<<' '<<a[i]; return cout; }
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 void Solve(){
-    int n; cin >> n;
-    vi a(n);
-    cin >> a;
-    srt(a);
-
-    // We can select any number and I didn't read that
-    // So make a practice of first reading question carefully
-
-    int score = 0;
-
-    reverse(a.begin(), a.end());
-
-    for(int i = 0; i < n; i++){
-        if(i % 2 == 0){
-            if(a[i] % 2){
-
-            }else{
-                score += a[i];
-            }
-        }else{
-            if(a[i] % 2 == 0){
-
-            }else{
-                score -= a[i];
-            }
-        }
-    }
-
-    if(score > 0){
-        cout << "Alice" << endl;
-    }else if(score < 0){
-        cout << "Bob" << endl;
-    }else{
-        cout << "Tie" << endl;
-    }
+	int n, k; cin >> n >> k;
+	int idx = -1;
+	char ch[n];
+	for(int i = 0; i < n; i++){
+		ch[i] = 'a';
+	}
+	for(int i = 2; i <= n+2; i++){
+		int flag = ((i - 1) * (i - 2)) / 2;
+		if(flag >= k){
+			idx = i-1;
+			break;
+		}
+	}
+	// cout << idx << " ";
+	int added = ((idx - 1) * (idx - 2)) / 2 ;
+	int pos2 = k - added;
+	// cout << pos2 << endl;
+	ch[pos2 - 1] = 'b';
+	ch[idx - 1] = 'b';
+	reverse(ch, ch + n);
+	cout << ch << endl;
+	for(int i = 0; i < n; i++){
+		// cout << ch[i];
+	}
+	// cout << endl;
 }
 
 int32_t main (){

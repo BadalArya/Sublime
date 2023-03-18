@@ -99,41 +99,53 @@ template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a)
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 void Solve(){
-    int n; cin >> n;
-    vi a(n);
-    cin >> a;
-    srt(a);
+	int n; cin >> n;
+	int m; cin >> m;
+	vi a(n);
+	vi b(m);    
+	cin >> a;
+	cin >> b;
 
-    // We can select any number and I didn't read that
-    // So make a practice of first reading question carefully
+	int sum1 = 0;
+	int sum2 = 0;
+	for(int i = 0; i < n; i++){
+		sum1 += a[i];
+	}
+	for(int i = 0; i < m; i++){
+		sum2 += b[i];
+	}
 
-    int score = 0;
+	if(sum1 != sum2){
+		cout << "-1" << endl;
+		return;
+	}
 
-    reverse(a.begin(), a.end());
+	int check1 = 0;
+	int check2 = 0;
+	int i = 0, j = 0;
+	int ans = 0;
+	while(i < n && j < m){
+		if(check1 > check2 && j < m){
+			check2 += b[j];
+			j++;
+		}else if(check2 > check1 && i < n){
+			check1 += a[i];
+			i++;
+		}else if(i < n && j < m){
+			check1 += a[i];
+			check2 += b[j];
+			i++;
+			j++;
+		}
 
-    for(int i = 0; i < n; i++){
-        if(i % 2 == 0){
-            if(a[i] % 2){
-
-            }else{
-                score += a[i];
-            }
-        }else{
-            if(a[i] % 2 == 0){
-
-            }else{
-                score -= a[i];
-            }
-        }
-    }
-
-    if(score > 0){
-        cout << "Alice" << endl;
-    }else if(score < 0){
-        cout << "Bob" << endl;
-    }else{
-        cout << "Tie" << endl;
-    }
+		if(check1 == check2){
+			ans ++;
+		}
+	}
+	if(i < n || j < m){
+		ans++;
+	}
+	cout << ans << endl;
 }
 
 int32_t main (){
