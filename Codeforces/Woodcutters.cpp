@@ -73,7 +73,7 @@ int gcd (int a, int b) { return a ? gcd (b % a, a) : b; }
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
-uint nCr(int n, int r, int p=MOD){     // faster calculation..
+/*uint nCr(int n, int r, int p=MOD){     // faster calculation..
     if (n < r)
         return 0;
     
@@ -81,12 +81,12 @@ uint nCr(int n, int r, int p=MOD){     // faster calculation..
         return 1;
     
     vector<int> fac(n+1,0);
-    fac[0] = 1;
+    fac.first = 1;
     for (int i = 1; i <= n; i++)
         fac[i] = (fac[i - 1] * i) % p;
     
     return (fac[n] * modInverse(fac[r], p) % p * modInverse(fac[n - r], p) % p) % p;
-}
+}*/
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
@@ -94,43 +94,41 @@ template<typename typC,typename typD> istream &operator>>(istream &cin,pair<typC
 template<typename typC> istream &operator>>(istream &cin,vector<typC> &a) { for (auto &x:a) cin>>x; return cin; }
 template<typename typC,typename typD> ostream &operator<<(ostream &cout,const pair<typC,typD> &a) { return cout<<a.first<<' '<<a.second; }
 template<typename typC,typename typD> ostream &operator<<(ostream &cout,const vector<pair<typC,typD> > &a) { for (auto &x:a) cout<<x<<endl; return cout; }
-template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a) { int n=a.size(); if (!n) return cout; cout<<a[0]; for (int i=1; i<n; i++) cout<<' '<<a[i]; return cout; }
+template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a) { int n=a.size(); if (!n) return cout; cout<<a.first; for (int i=1; i<n; i++) cout<<' '<<a[i]; return cout; }
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 void Solve(){
-	int n = 10;
-	char suduko[n][n];
-	for(int i = 1; i < n; i++){
-		for(int j = 1; j < n; j++){
-			cin >> suduko[i][j];
-		}
+	int n; cin >> n;
+	vector<pair<int,int>> trees(n);
+	for(int i = 0; i < n; i++){
+		cin >> trees[i].first >> trees[i].second;
 	}    
 
-	suduko[1][1] = suduko[1][2];
-	suduko[4][2] = suduko[4][3];
-	suduko[7][3] = suduko[7][2];
+	int lastOccupiedPoint = trees[0].first;
+	int ans = 2;
 
-	suduko[2][4] = suduko[2][5];
-	suduko[5][5] = suduko[5][6];
-	suduko[8][6] = suduko[8][5];
-
-	suduko[3][7] = suduko[3][8];
-	suduko[6][8] = suduko[6][9];
-	suduko[9][9] = suduko[9][8];
-
-	for(int i = 1; i < n; i++){
-		for(int j = 1; j < n; j++){
-			cout << suduko[i][j];
+	for(int i = 1; i < n - 1; i++){
+		if(trees[i].first - trees[i].second > lastOccupiedPoint){
+			lastOccupiedPoint = trees[i].first;
+			// cout << i << " " << lastOccupiedPoint << endl;
+			ans++;
+		}else if(trees[i].second + trees[i].first < trees[i+1].first ){
+			lastOccupiedPoint = trees[i].second + trees[i].first;
+			ans++;
+			// cout << i << " " << lastOccupiedPoint << endl;
+		}else{
+			lastOccupiedPoint = trees[i].first;
 		}
-		cout << endl;
 	}
+
+	cout << ans << endl;
 }
 
 int32_t main (){
     Badal;
     int tc = 1;
-    cin >> tc;
+
     while (tc--){
         Solve();
     }

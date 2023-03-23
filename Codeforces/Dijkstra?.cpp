@@ -98,39 +98,57 @@ template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a)
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
-void Solve(){
-	int n = 10;
-	char suduko[n][n];
-	for(int i = 1; i < n; i++){
-		for(int j = 1; j < n; j++){
-			cin >> suduko[i][j];
+vector<vector<pair<int,int>>> graph;
+vector<int> parent;
+
+void dfs(int source, int pappa, vector<int> &dist){
+	parent[source] = pappa;
+	for(auto [child, weight] : graph[source]){
+		if(weight + dist[source] < dist[child] || dist[child] == 1e18){
+			dist[child] = weight + dist[source];
+			dfs(child, source, dist);
 		}
-	}    
-
-	suduko[1][1] = suduko[1][2];
-	suduko[4][2] = suduko[4][3];
-	suduko[7][3] = suduko[7][2];
-
-	suduko[2][4] = suduko[2][5];
-	suduko[5][5] = suduko[5][6];
-	suduko[8][6] = suduko[8][5];
-
-	suduko[3][7] = suduko[3][8];
-	suduko[6][8] = suduko[6][9];
-	suduko[9][9] = suduko[9][8];
-
-	for(int i = 1; i < n; i++){
-		for(int j = 1; j < n; j++){
-			cout << suduko[i][j];
-		}
-		cout << endl;
 	}
+}
+
+void Solve(){
+	int n, m; cin >> n >> m;
+
+	graph.resize(n+1);
+	parent.resize(n+1);
+	vector<int> dist(n+1, 1e18);
+
+	for(int i = 0; i < m; i++){
+		int x, y, w; cin >> x >> y >> w;
+		graph[x].push_back({y, w});
+		graph[y].push_back({x, w});
+	}
+
+	dist[1] = 0;
+	dfs(1, 1, dist);
+
+	if(dist[n] == 1e18){
+		cout << "-1" << endl;
+		return;
+	}
+
+	vector<int> ans;
+	ans.push_back(n);
+	while(parent[n] != 1){
+		ans.push_back(parent[n]);
+		n = parent[n];
+	}
+	ans.push_back(1);
+	
+	reverse(ans.begin(), ans.end());
+
+	cout << ans << endl;
 }
 
 int32_t main (){
     Badal;
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     while (tc--){
         Solve();
     }

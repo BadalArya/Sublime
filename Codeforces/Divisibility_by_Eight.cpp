@@ -99,38 +99,42 @@ template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a)
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 void Solve(){
-	int n = 10;
-	char suduko[n][n];
-	for(int i = 1; i < n; i++){
-		for(int j = 1; j < n; j++){
-			cin >> suduko[i][j];
+	vector<string> eight;
+	map<string, int> mp;
+	for(int i = 0; i < 125; i++){
+		string s = to_string(i*8);
+		int a = s.size();
+		if(!(mp[s.substr(1, 1)]) && !mp[s.substr(1, 2)]){
+			eight.push_back(s);
 		}
-	}    
-
-	suduko[1][1] = suduko[1][2];
-	suduko[4][2] = suduko[4][3];
-	suduko[7][3] = suduko[7][2];
-
-	suduko[2][4] = suduko[2][5];
-	suduko[5][5] = suduko[5][6];
-	suduko[8][6] = suduko[8][5];
-
-	suduko[3][7] = suduko[3][8];
-	suduko[6][8] = suduko[6][9];
-	suduko[9][9] = suduko[9][8];
-
-	for(int i = 1; i < n; i++){
-		for(int j = 1; j < n; j++){
-			cout << suduko[i][j];
+		mp[s] = 1;
+	}  
+	string t; cin >> t;
+	for(int i = 0; i < eight.size(); i++){
+		int j = 0;
+		int k = 0;
+		string flag = "";
+		while(j < eight[i].size() && k < t.size()){
+			if(eight[i][j] == t[k]){
+				flag += t[k];
+				j++;
+			}
+			if(flag == eight[i]){
+				cout << "YES" << endl;
+				cout << flag << endl;
+				return;
+			}
+			k++;
 		}
-		cout << endl;
 	}
+	// cout << eight << endl;
+	cout << "NO" << endl;
 }
 
 int32_t main (){
     Badal;
     int tc = 1;
-    cin >> tc;
+
     while (tc--){
         Solve();
     }

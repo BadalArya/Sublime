@@ -99,38 +99,35 @@ template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a)
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 void Solve(){
-	int n = 10;
-	char suduko[n][n];
-	for(int i = 1; i < n; i++){
-		for(int j = 1; j < n; j++){
-			cin >> suduko[i][j];
+	int n; cin >> n;
+	int a[n+1] = {0};
+	for(int i = 1; i <= n; i++){
+		cin >> a[i];
+	} 
+
+	int dp[n+1][3];
+	memset(dp, 0, sizeof(dp));
+
+	// dp[i][0] --> rest
+	// dp[i][1] --> gym
+	// dp[i][2] --> contest
+	for(int i = 1; i <= n; i++){
+		if(a[i] == 2 || a[i] == 3){
+			dp[i][1] = 1 + max(dp[i - 1][0], dp[i - 1][2]);
 		}
-	}    
-
-	suduko[1][1] = suduko[1][2];
-	suduko[4][2] = suduko[4][3];
-	suduko[7][3] = suduko[7][2];
-
-	suduko[2][4] = suduko[2][5];
-	suduko[5][5] = suduko[5][6];
-	suduko[8][6] = suduko[8][5];
-
-	suduko[3][7] = suduko[3][8];
-	suduko[6][8] = suduko[6][9];
-	suduko[9][9] = suduko[9][8];
-
-	for(int i = 1; i < n; i++){
-		for(int j = 1; j < n; j++){
-			cout << suduko[i][j];
+		if(a[i] == 1 || a[i] == 3){
+			dp[i][2] = 1 + max(dp[i - 1][0], dp[i - 1][1]);
 		}
-		cout << endl;
+		dp[i][0] = max(dp[i][1], max(dp[i][2], dp[i][0]));
 	}
+
+	cout << n - (dp[n][1])<< endl;
 }
 
 int32_t main (){
     Badal;
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     while (tc--){
         Solve();
     }
