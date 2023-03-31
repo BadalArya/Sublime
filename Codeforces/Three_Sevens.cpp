@@ -63,6 +63,11 @@ uint power(int x, int y, int p =  MOD){
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
+int toInt(string s) {int res; stringstream ss; ss<<s; ss>>res; return res; }
+string toString(int n) { stringstream ss; ss<<n; return ss.str(); }
+
+//--------------------------------------------------------------------------------------------------------------------------------------
+
 uint modInverse(int n, int p=MOD){       // using fermats little thm. [p needs to be prime which is mostly the case as mod value generally is 1e9+7]
     return power(n, p - 2, p);
 }
@@ -99,40 +104,38 @@ template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a)
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 void Solve(){
-	int n; cin >> n;
-	vpp v(n);
+	int m; cin >> m;
+	vvi ans(m);
+	map<int,int> mp;
+	for(int i = 0; i < m; i++){
+		int n; cin >> n;
+		vi flag(n);
+		for(int j = 0; j < n; j++){
+			cin >> flag[j];
+			mp[flag[j]]++;
+		}
+		ans[i] = (flag);
+	}
 
-	for(int i = 0; i < n; i++){
-		cin >> v[i].first;
-	}    
+	vi res;
 
-	int ones = 0;
-	int zeroes = 0;
-
-	for(int i = 0; i < n; i++){
-		cin >> v[i].second;
-		if(v[i].second == 1){
-			ones++;
-		}else{
-			zeroes++;
+	for(int i = 0; i < m; i++){
+		bool flag2 = false;
+		for(int j = 0; j < ans[i].size(); j++){
+			if(mp[ans[i][j]] == 1 && !flag2){
+				res.push_back(ans[i][j]);
+				flag2 = true;
+			}
+			mp[ans[i][j]]--;
 		}
 	}
 
-	bool flag = true;
-	int minm = INT_MAX;
-
-	for(int i = 0; i < n - 1; i++){
-		if(v[i].first > v[i+1].first){
-			flag = false;
-		}
-	}
-	// cout << zeroes << "   " << ones << " ";
-	if(flag == true || (zeroes && ones)){
-		cout << "YES" << endl;
+	if(res.size() != m){
+		cout << "-1" << endl;
 		return;
 	}
 
-	cout << "NO" << endl;
+	cout << res << endl;
 }
 
 int32_t main (){

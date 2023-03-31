@@ -63,6 +63,11 @@ uint power(int x, int y, int p =  MOD){
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
+int toInt(string s) {int res; stringstream ss; ss<<s; ss>>res; return res; }
+string toString(int n) { stringstream ss; ss<<n; return ss.str(); }
+
+//--------------------------------------------------------------------------------------------------------------------------------------
+
 uint modInverse(int n, int p=MOD){       // using fermats little thm. [p needs to be prime which is mostly the case as mod value generally is 1e9+7]
     return power(n, p - 2, p);
 }
@@ -100,35 +105,94 @@ template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a)
 
 void Solve(){
 	int n; cin >> n;
-	vpp v(n);
-
+	vi pos, neg;
+	int maxm = INT_MIN;
+	int minm = INT_MAX;
 	for(int i = 0; i < n; i++){
-		cin >> v[i].first;
+		int x; cin >> x;
+		maxm = max(maxm, x);
+		minm = min(minm, x);
+		if(x > 0){
+			pos.push_back(x);
+		}else{
+			neg.push_back(x);
+		}
 	}    
 
-	int ones = 0;
-	int zeroes = 0;
+	int diff = maxm - minm;
 
-	for(int i = 0; i < n; i++){
-		cin >> v[i].second;
-		if(v[i].second == 1){
-			ones++;
+	srt(neg);
+	srt(pos);
+
+	reverse(pos.begin(), pos.end());
+
+	vi res;
+	int i = 0;
+	int j = 0;
+	int sum = 0;
+	int idx = 0;
+	bool flag = true;
+	while(i < neg.size() && j < pos.size()){
+		if(sum < 0){
+			res.push_back(pos[j++]);
 		}else{
-			zeroes++;
+			res.push_back(neg[i++]);
 		}
+		sum += res[idx++];
 	}
 
-	bool flag = true;
-	int minm = INT_MAX;
-
-	for(int i = 0; i < n - 1; i++){
-		if(v[i].first > v[i+1].first){
+	while(i < neg.size()){
+		res.push_back(neg[i++]);
+	}
+	while(j < pos.size()){
+		res.push_back(pos[j++]);
+	}
+	sum = 0;
+	for(int i = 0; i < res.size(); i++){
+		sum += res[i];
+		if(sum >= diff){
 			flag = false;
 		}
 	}
-	// cout << zeroes << "   " << ones << " ";
-	if(flag == true || (zeroes && ones)){
+
+	if(flag){
 		cout << "YES" << endl;
+		cout << res << endl;
+		return;
+	}
+
+	vi res2;
+	i = 0;
+	sum = 0;
+	j = 0;
+	while(i < neg.size() && j < pos.size()){
+		if(sum < 0){
+			res.push_back(neg[j++]);
+		}else{
+			res.push_back(pos[i++]);
+		}
+		sum += res[idx++];
+		
+	}
+
+	while(i < neg.size()){
+		res.push_back(neg[i++]);
+	}
+	while(j < pos.size()){
+		res.push_back(pos[j++]);
+	}
+	sum = 0;
+	flag = true;
+	for(int i = 0; i < res.size(); i++){
+		sum += res[i];
+		if(sum >= diff){
+			flag = false;
+		}
+	}
+
+	if(flag){
+		cout << "YES" << endl;
+		cout << res << endl;
 		return;
 	}
 

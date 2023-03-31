@@ -63,6 +63,11 @@ uint power(int x, int y, int p =  MOD){
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
+int toInt(string s) {int res; stringstream ss; ss<<s; ss>>res; return res; }
+string toString(int n) { stringstream ss; ss<<n; return ss.str(); }
+
+//--------------------------------------------------------------------------------------------------------------------------------------
+
 uint modInverse(int n, int p=MOD){       // using fermats little thm. [p needs to be prime which is mostly the case as mod value generally is 1e9+7]
     return power(n, p - 2, p);
 }
@@ -70,6 +75,7 @@ uint modInverse(int n, int p=MOD){       // using fermats little thm. [p needs t
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 int gcd (int a, int b) { return a ? gcd (b % a, a) : b; }
+int lcm (int a, int b) {return (a*b) / gcd(a, b);}
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
@@ -100,39 +106,54 @@ template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a)
 
 void Solve(){
 	int n; cin >> n;
-	vpp v(n);
-
+	int k; cin >> k;
+	vi a(n);
+	cin >> a;
+	
+	map<int,int> mp;
+	vi flag = a;
+	srt(flag);
 	for(int i = 0; i < n; i++){
-		cin >> v[i].first;
-	}    
+		mp[flag[i]] = i+1;
+	}
 
-	int ones = 0;
-	int zeroes = 0;
+	for(auto k : mp){
+		// cout << k << endl;
+	}
 
-	for(int i = 0; i < n; i++){
-		cin >> v[i].second;
-		if(v[i].second == 1){
-			ones++;
+	int segments = 0;
+	int continued = 0;
+	for(int i = 0; i < n-1; i++){
+		if(a[i] > a[i+1]){
+			segments++;
+			continued = 0;
+		}
+		else if(mp[a[i]] + 1 != mp[a[i+1]]){
+			// cout << i << " ";
+			segments++;
+			continued = 0;
 		}else{
-			zeroes++;
+			continued++;
 		}
 	}
 
-	bool flag = true;
-	int minm = INT_MAX;
+	// if(continued){
+	// 	// cout << "fs";
+	// 	segments++;
+	// }
+	// if(a[n-1] < a[n-2]){
+	// 	// cout << "gf";
+	// 	segments++;
+	// }
+	segments++;
 
-	for(int i = 0; i < n - 1; i++){
-		if(v[i].first > v[i+1].first){
-			flag = false;
-		}
-	}
-	// cout << zeroes << "   " << ones << " ";
-	if(flag == true || (zeroes && ones)){
-		cout << "YES" << endl;
-		return;
-	}
+	// cout << segments << " ";
 
-	cout << "NO" << endl;
+	if(segments <= k){
+		cout << "Yes" << endl;
+	}else{
+		cout << "No" << endl;
+	}
 }
 
 int32_t main (){

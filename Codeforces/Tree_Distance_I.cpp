@@ -63,6 +63,11 @@ uint power(int x, int y, int p =  MOD){
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
+int toInt(string s) {int res; stringstream ss; ss<<s; ss>>res; return res; }
+string toString(int n) { stringstream ss; ss<<n; return ss.str(); }
+
+//--------------------------------------------------------------------------------------------------------------------------------------
+
 uint modInverse(int n, int p=MOD){       // using fermats little thm. [p needs to be prime which is mostly the case as mod value generally is 1e9+7]
     return power(n, p - 2, p);
 }
@@ -98,47 +103,45 @@ template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a)
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
+vector<int> res, distNode;
+
+void populate(int source, vvi &graph, int parent = -1){
+	distNode[source] = 0;
+	for(auto ch: graph[source]){
+		if(ch == parent){
+			continue;
+		}
+		populate(ch, graph, source);
+
+		res[source] = res[ch] + distNode[source];
+		distNode[source] = max(distNode[source], 1 + distNode[ch]);
+	}
+}
+
 void Solve(){
 	int n; cin >> n;
-	vpp v(n);
-
-	for(int i = 0; i < n; i++){
-		cin >> v[i].first;
-	}    
-
-	int ones = 0;
-	int zeroes = 0;
-
-	for(int i = 0; i < n; i++){
-		cin >> v[i].second;
-		if(v[i].second == 1){
-			ones++;
-		}else{
-			zeroes++;
-		}
+	vvi graph(n+1);
+	distNode.assign(n+1, 0);
+	res.assign(n+1, 0);
+	int edges = n - 1;
+	    
+	for(int i = 0; i < edges; i++){
+	    int x, y; cin >> x >> y;
+	    graph[x].push_back(y);
+	    graph[y].push_back(x);
 	}
 
-	bool flag = true;
-	int minm = INT_MAX;
+	populate(1, graph);
 
-	for(int i = 0; i < n - 1; i++){
-		if(v[i].first > v[i+1].first){
-			flag = false;
-		}
-	}
-	// cout << zeroes << "   " << ones << " ";
-	if(flag == true || (zeroes && ones)){
-		cout << "YES" << endl;
-		return;
-	}
+	cout << distNode << endl;
+	cout << res << endl;
 
-	cout << "NO" << endl;
 }
 
 int32_t main (){
     Badal;
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     while (tc--){
         Solve();
     }

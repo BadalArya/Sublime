@@ -63,6 +63,11 @@ uint power(int x, int y, int p =  MOD){
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
+int toInt(string s) {int res; stringstream ss; ss<<s; ss>>res; return res; }
+string toString(int n) { stringstream ss; ss<<n; return ss.str(); }
+
+//--------------------------------------------------------------------------------------------------------------------------------------
+
 uint modInverse(int n, int p=MOD){       // using fermats little thm. [p needs to be prime which is mostly the case as mod value generally is 1e9+7]
     return power(n, p - 2, p);
 }
@@ -70,6 +75,7 @@ uint modInverse(int n, int p=MOD){       // using fermats little thm. [p needs t
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 int gcd (int a, int b) { return a ? gcd (b % a, a) : b; }
+int lcm (int a, int b) {return (a*b) / gcd(a, b);}
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
@@ -99,39 +105,29 @@ template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a)
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 void Solve(){
-	int n; cin >> n;
-	vpp v(n);
-
-	for(int i = 0; i < n; i++){
-		cin >> v[i].first;
+	int n, m; cin >> n >> m;
+	int odd = 1;
+	// if(m > n / 2){
+	// 	cout << "NO" << endl;
+	// 	return;
+	// }
+	// map<int,int> mp;
+	while(m > 1 && n > 0){
+		// mp[odd] = 1;
+		n -= odd;
+		// if(mp[n]){
+		// 	cout << "NO" << endl;
+		// 	return;
+		// }
+		// cout << odd << " ";
+		m--;
+		odd += 2;
 	}    
 
-	int ones = 0;
-	int zeroes = 0;
-
-	for(int i = 0; i < n; i++){
-		cin >> v[i].second;
-		if(v[i].second == 1){
-			ones++;
-		}else{
-			zeroes++;
-		}
-	}
-
-	bool flag = true;
-	int minm = INT_MAX;
-
-	for(int i = 0; i < n - 1; i++){
-		if(v[i].first > v[i+1].first){
-			flag = false;
-		}
-	}
-	// cout << zeroes << "   " << ones << " ";
-	if(flag == true || (zeroes && ones)){
+	if(n % 2 && n >= odd){
 		cout << "YES" << endl;
 		return;
 	}
-
 	cout << "NO" << endl;
 }
 

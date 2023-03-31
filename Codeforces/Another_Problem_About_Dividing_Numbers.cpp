@@ -63,6 +63,11 @@ uint power(int x, int y, int p =  MOD){
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
+int toInt(string s) {int res; stringstream ss; ss<<s; ss>>res; return res; }
+string toString(int n) { stringstream ss; ss<<n; return ss.str(); }
+
+//--------------------------------------------------------------------------------------------------------------------------------------
+
 uint modInverse(int n, int p=MOD){       // using fermats little thm. [p needs to be prime which is mostly the case as mod value generally is 1e9+7]
     return power(n, p - 2, p);
 }
@@ -70,6 +75,7 @@ uint modInverse(int n, int p=MOD){       // using fermats little thm. [p needs t
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 int gcd (int a, int b) { return a ? gcd (b % a, a) : b; }
+int lcm (int a, int b) {return (a*b) / gcd(a, b);}
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
@@ -99,40 +105,74 @@ template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a)
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 void Solve(){
-	int n; cin >> n;
-	vpp v(n);
-
-	for(int i = 0; i < n; i++){
-		cin >> v[i].first;
-	}    
-
-	int ones = 0;
-	int zeroes = 0;
-
-	for(int i = 0; i < n; i++){
-		cin >> v[i].second;
-		if(v[i].second == 1){
-			ones++;
-		}else{
-			zeroes++;
-		}
-	}
-
-	bool flag = true;
-	int minm = INT_MAX;
-
-	for(int i = 0; i < n - 1; i++){
-		if(v[i].first > v[i+1].first){
-			flag = false;
-		}
-	}
-	// cout << zeroes << "   " << ones << " ";
-	if(flag == true || (zeroes && ones)){
-		cout << "YES" << endl;
+	int a, b, k; cin >> a >> b >> k;
+	vi divA, divB;
+	if(a == b && k == 1){
+		cout << "NO" << endl;
 		return;
 	}
 
-	cout << "NO" << endl;
+	if(k == 1){
+		if(a % b == 0 || b % a == 0){
+			cout << "YES" << endl;
+		}else{
+			cout << "NO" << endl;
+		}
+		return;
+	}
+
+	for(int i = 1; i <= sqrt(a); i++){
+		if(i * i == a){
+			divA.push_back(i);
+		}else if(a % i == 0){
+			divA.push_back(i);
+			divA.push_back(a / i);
+		}
+	} 
+	for(int i = 1; i <= sqrt(b); i++){
+		if(i * i == b){
+			divB.push_back(i);
+		}else if(b % i == 0){
+			divB.push_back(i);
+			divB.push_back(b / i);
+		}
+	}   
+
+	srt(divB); srt(divA);
+
+	// int slowest1 = divA.size();
+	// int slowest2 = divB.size();
+	int slowest2 = 0;
+	int slowest1 = 0;
+	int flag = a;
+	int i = 1;
+	while(flag && i < divA.size()){
+		if(flag % divA[i] == 0){
+			slowest1++;
+			flag /= divA[i];
+		}else{
+			i++;
+		}
+	} 
+
+	flag = b;
+
+	i = 1;
+	// cout << divB << " ";
+	while(flag && i < divB.size()){
+		if(flag % divB[i] == 0){
+			slowest2++;
+			flag /= divB[i];
+		}else{
+			i++;
+		}
+	}
+	// cout << slowest2 << " " << slowest1 << "  " ;
+	if(slowest2 + slowest1 >= k){
+		cout << "YES" << endl;
+	}else{
+		cout << "NO" << endl;
+	}
 }
 
 int32_t main (){

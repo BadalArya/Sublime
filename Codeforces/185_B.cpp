@@ -100,39 +100,33 @@ template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a)
 
 void Solve(){
 	int n; cin >> n;
-	vpp v(n);
-
-	for(int i = 0; i < n; i++){
-		cin >> v[i].first;
+	if(n <= 1){
+		cout << 0 << endl;
+		return;
 	}    
-
-	int ones = 0;
-	int zeroes = 0;
-
-	for(int i = 0; i < n; i++){
-		cin >> v[i].second;
-		if(v[i].second == 1){
-			ones++;
-		}else{
-			zeroes++;
-		}
-	}
-
-	bool flag = true;
-	int minm = INT_MAX;
-
-	for(int i = 0; i < n - 1; i++){
-		if(v[i].first > v[i+1].first){
-			flag = false;
-		}
-	}
-	// cout << zeroes << "   " << ones << " ";
-	if(flag == true || (zeroes && ones)){
-		cout << "YES" << endl;
+	if(n < 5){
+		cout << 1 << endl;
 		return;
 	}
+	
+	int x = sqrtl(n - 1);
+	cout << x << endl;
 
-	cout << "NO" << endl;
+	// int s = 0;
+	// int e = 1e9;
+	// int ans = 1e10;
+	// while(s <= e){
+	// 	int mid = (s+e) / 2;
+	// 	if((2 * mid * (mid+1)) <= n){
+	// 		ans = min(ans, mid);
+	// 		e = mid - 1;
+	// 	}else{
+	// 		s = mid+1;
+	// 	}
+	// }
+
+	// cout << ans << endl;
+
 }
 
 int32_t main (){

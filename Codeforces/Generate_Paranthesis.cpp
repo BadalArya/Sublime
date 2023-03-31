@@ -98,47 +98,36 @@ template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a)
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
-void Solve(){
-	int n; cin >> n;
-	vpp v(n);
-
-	for(int i = 0; i < n; i++){
-		cin >> v[i].first;
-	}    
-
-	int ones = 0;
-	int zeroes = 0;
-
-	for(int i = 0; i < n; i++){
-		cin >> v[i].second;
-		if(v[i].second == 1){
-			ones++;
-		}else{
-			zeroes++;
-		}
-	}
-
-	bool flag = true;
-	int minm = INT_MAX;
-
-	for(int i = 0; i < n - 1; i++){
-		if(v[i].first > v[i+1].first){
-			flag = false;
-		}
-	}
-	// cout << zeroes << "   " << ones << " ";
-	if(flag == true || (zeroes && ones)){
-		cout << "YES" << endl;
+void generateParanthesis(string s, int n, int open, int close, vector<string> &ans){
+	if(open > n || close > n){
 		return;
 	}
+	if(open == n && close == n){
+		ans.push_back(s);
+		return;
+	}
+	
+	if(close < open){
+		generateParanthesis(s + ')', n, open, close+1, ans);
+	}
 
-	cout << "NO" << endl;
+    if(open < n){
+        generateParanthesis(s + '(', n, open+1, close, ans);
+    }
+}
+
+void Solve(){
+	int n; cin >> n;
+	vector<string> ans;
+	generateParanthesis("", n, 0, 0, ans);    
+
+	cout << ans << endl;
 }
 
 int32_t main (){
     Badal;
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     while (tc--){
         Solve();
     }

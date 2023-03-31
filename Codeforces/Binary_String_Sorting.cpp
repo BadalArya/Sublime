@@ -99,40 +99,49 @@ template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a)
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 void Solve(){
-	int n; cin >> n;
-	vpp v(n);
-
+	string s; cin >> s;
+	int n = s.size();
+	int zero_remaining = 0;
+	int ones_remaining = 0;
 	for(int i = 0; i < n; i++){
-		cin >> v[i].first;
+		if(s[i] == '0'){
+			zero_remaining++;
+		}else{
+			ones_remaining++;
+		}
 	}    
 
-	int ones = 0;
-	int zeroes = 0;
+	int cost1 = 1e12;
+	int cost2 = cost1 + 1;
 
-	for(int i = 0; i < n; i++){
-		cin >> v[i].second;
-		if(v[i].second == 1){
-			ones++;
-		}else{
-			zeroes++;
-		}
-	}
-
-	bool flag = true;
-	int minm = INT_MAX;
-
-	for(int i = 0; i < n - 1; i++){
-		if(v[i].first > v[i+1].first){
-			flag = false;
-		}
-	}
-	// cout << zeroes << "   " << ones << " ";
-	if(flag == true || (zeroes && ones)){
-		cout << "YES" << endl;
+	if(!zero_remaining || !ones_remaining){
+		cout << 0 << endl;
 		return;
 	}
 
-	cout << "NO" << endl;
+	int zero_processed = 0;
+	int ones_processed = 0;
+	int ans = cost2*(min(ones_remaining, zero_remaining));
+	// cout << ans << endl;
+
+	for(int i = 0; i < n; i++){
+		if(s[i] == '0'){
+			zero_processed++;
+		}else{
+			ones_processed++;
+		}
+
+
+		if(i < n - 1 && s[i] == '1' && s[i+1] == '0'){
+			int ans1 = (cost1 + (ones_processed - 1) * cost2 + min((ones_remaining - ones_processed + 1) * cost2, (zero_remaining - zero_processed - 1) * cost2));
+			ans = min(ans, ans1);
+		}
+
+		int ans2 = (ones_processed*cost2 + min((ones_remaining - ones_processed) * cost2, (zero_remaining - zero_processed) * cost2));
+		ans = min(ans, ans2);
+	}
+
+	cout << ans << endl;
 }
 
 int32_t main (){

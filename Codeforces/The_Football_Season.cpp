@@ -118,7 +118,7 @@ void Solve(){
 		}
 	}
 
-	cout << "-1" << endl;
+	cout << "-1" << endl;w
 }
 
 int32_t main (){

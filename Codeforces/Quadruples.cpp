@@ -100,45 +100,42 @@ template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a)
 
 void Solve(){
 	int n; cin >> n;
-	vpp v(n);
+	int ans = 0;
+	for(int i = 1; i < n; i++){
+		int AB = i;
+		int CD = n - i;
 
-	for(int i = 0; i < n; i++){
-		cin >> v[i].first;
+		// Finding numbers which multiply to give AB i.e. Divisors of AB
+		int countAB = 0;
+		for(int j = 1; j <= sqrt(AB); j++){
+			if(j * j == AB){
+				countAB++;
+			}else if(AB % j == 0){
+				countAB += 2;
+			}
+		}
+
+		// Finding Divisors of CD
+		int countCD = 0;
+		for(int j = 1; j <= sqrt(CD); j++){
+			if(j * j == CD){
+				countCD++;
+			}else if(CD % j == 0){
+				countCD += 2;
+			}
+		}
+
+		// Formation made with each other
+		ans += (countAB * countCD);
 	}    
 
-	int ones = 0;
-	int zeroes = 0;
-
-	for(int i = 0; i < n; i++){
-		cin >> v[i].second;
-		if(v[i].second == 1){
-			ones++;
-		}else{
-			zeroes++;
-		}
-	}
-
-	bool flag = true;
-	int minm = INT_MAX;
-
-	for(int i = 0; i < n - 1; i++){
-		if(v[i].first > v[i+1].first){
-			flag = false;
-		}
-	}
-	// cout << zeroes << "   " << ones << " ";
-	if(flag == true || (zeroes && ones)){
-		cout << "YES" << endl;
-		return;
-	}
-
-	cout << "NO" << endl;
+	cout << ans << endl;
 }
 
 int32_t main (){
     Badal;
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     while (tc--){
         Solve();
     }

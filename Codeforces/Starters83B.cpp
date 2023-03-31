@@ -63,6 +63,11 @@ uint power(int x, int y, int p =  MOD){
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
+int toInt(string s) {int res; stringstream ss; ss<<s; ss>>res; return res; }
+string toString(int n) { stringstream ss; ss<<n; return ss.str(); }
+
+//--------------------------------------------------------------------------------------------------------------------------------------
+
 uint modInverse(int n, int p=MOD){       // using fermats little thm. [p needs to be prime which is mostly the case as mod value generally is 1e9+7]
     return power(n, p - 2, p);
 }
@@ -70,6 +75,7 @@ uint modInverse(int n, int p=MOD){       // using fermats little thm. [p needs t
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 int gcd (int a, int b) { return a ? gcd (b % a, a) : b; }
+int lcm (int a, int b) {return (a*b) / gcd(a, b);}
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
@@ -99,40 +105,46 @@ template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a)
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 void Solve(){
-	int n; cin >> n;
-	vpp v(n);
+    int n, p, q; cin >> n >> p >> q;
+    string s; cin >> s;
+    for(int i = 0; i < n; i++){
+    	if(s[i] == 'a'){
+    		continue;
+    	}
+    	int diff = s[i] - 'a';
+    	int minChange = 26 - diff;
+    	if(diff <= 13 && q >= diff){
+    		int flag = min(diff, q);
+    		q -= flag;
+    		s[i] = 'a';
+    		continue;
+    	}
+    	if(q >= diff){
+    		q -= (min(diff, q));
+    		s[i] = 'a';
+    	}
 
-	for(int i = 0; i < n; i++){
-		cin >> v[i].first;
-	}    
+    	if(s[i] == 'a'){
+    		continue;
+    	}
+    	if(p >= minChange){
+    		p -= (min (minChange, p));
+    		s[i] = 'a';
+    	}
 
-	int ones = 0;
-	int zeroes = 0;
+    	if(s[i] == 'a'){
+    		continue;
+    	}
+    	while(s[i] != 'a' && q){
+    		s[i]--;
+    		q--;
+    	}
+    }
 
-	for(int i = 0; i < n; i++){
-		cin >> v[i].second;
-		if(v[i].second == 1){
-			ones++;
-		}else{
-			zeroes++;
-		}
-	}
+    // cout << p <<  "  " << q << "  " << endl;
+    // for(int i = n - 1; i >= 0; i)
 
-	bool flag = true;
-	int minm = INT_MAX;
-
-	for(int i = 0; i < n - 1; i++){
-		if(v[i].first > v[i+1].first){
-			flag = false;
-		}
-	}
-	// cout << zeroes << "   " << ones << " ";
-	if(flag == true || (zeroes && ones)){
-		cout << "YES" << endl;
-		return;
-	}
-
-	cout << "NO" << endl;
+    cout << s << endl;
 }
 
 int32_t main (){

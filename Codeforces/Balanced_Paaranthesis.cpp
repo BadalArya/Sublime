@@ -99,40 +99,22 @@ template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a)
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 void Solve(){
-	int n; cin >> n;
-	vpp v(n);
-
-	for(int i = 0; i < n; i++){
-		cin >> v[i].first;
-	}    
-
-	int ones = 0;
-	int zeroes = 0;
-
-	for(int i = 0; i < n; i++){
-		cin >> v[i].second;
-		if(v[i].second == 1){
-			ones++;
-		}else{
-			zeroes++;
+	// string s; cin >> s;
+	vector<vector<int>> a(5, vector<int> (5, 0));
+	// vi a(5);
+	// int a[5][5];
+	int count = 0;
+	for(auto &k : a){
+		for(auto &l : k){
+			int x; cin >> x;
+			l = x;
 		}
 	}
 
-	bool flag = true;
-	int minm = INT_MAX;
-
-	for(int i = 0; i < n - 1; i++){
-		if(v[i].first > v[i+1].first){
-			flag = false;
-		}
-	}
-	// cout << zeroes << "   " << ones << " ";
-	if(flag == true || (zeroes && ones)){
-		cout << "YES" << endl;
-		return;
+	for (auto k : a){
+		cout << k << endl;
 	}
 
-	cout << "NO" << endl;
 }
 
 int32_t main (){

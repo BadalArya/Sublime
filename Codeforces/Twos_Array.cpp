@@ -63,6 +63,11 @@ uint power(int x, int y, int p =  MOD){
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
+int toInt(string s) {int res; stringstream ss; ss<<s; ss>>res; return res; }
+string toString(int n) { stringstream ss; ss<<n; return ss.str(); }
+
+//--------------------------------------------------------------------------------------------------------------------------------------
+
 uint modInverse(int n, int p=MOD){       // using fermats little thm. [p needs to be prime which is mostly the case as mod value generally is 1e9+7]
     return power(n, p - 2, p);
 }
@@ -100,39 +105,62 @@ template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a)
 
 void Solve(){
 	int n; cin >> n;
-	vpp v(n);
-
-	for(int i = 0; i < n; i++){
-		cin >> v[i].first;
+	string s = "";
+	int flag = n;
+	while(flag){
+		s += (flag % 2) + '0';
+		flag /= 2;
 	}    
+	vector<int> goodArray;
 
-	int ones = 0;
-	int zeroes = 0;
-
-	for(int i = 0; i < n; i++){
-		cin >> v[i].second;
-		if(v[i].second == 1){
-			ones++;
-		}else{
-			zeroes++;
+	for(int i = 0; i < s.size(); i++){
+		if(s[i] == '1'){
+			goodArray.push_back(pow(2, i));
 		}
 	}
+	int size = goodArray.size();
 
-	bool flag = true;
-	int minm = INT_MAX;
-
-	for(int i = 0; i < n - 1; i++){
-		if(v[i].first > v[i+1].first){
-			flag = false;
+	// cout << goodArray << endl;  
+	map<vector<int>, int> mp;
+	vector<int> ans(n, 1);
+	vvi check;
+	check.push_back(goodArray);
+	int i = 0;
+	while(!mp[ans] && i < check.size()){
+		set<int> st;
+		for(int j = 0; j < check[i].size(); j++){
+			st.insert(check[i][j]);
 		}
+		if(st.size() == 1 && *st.begin() == 1){
+			break;
+		}
+		for(auto l : st){
+			if(l > 1){
+				vector<int> flag;
+				bool foo = false;
+				for(int k = 0; k < check[i].size(); k++){
+					if(check[i][k] == l && !foo) {
+						flag.push_back(l / 2);
+						flag.push_back(l / 2);
+						foo = true;
+					}else{
+						flag.push_back(check[i][k]);
+					}
+				}
+				srt(flag);
+				if(!mp[flag]){
+					check.push_back(flag);
+					mp[flag] = 1;
+				}
+			}
+		}
+		i++;
 	}
-	// cout << zeroes << "   " << ones << " ";
-	if(flag == true || (zeroes && ones)){
-		cout << "YES" << endl;
-		return;
-	}
-
-	cout << "NO" << endl;
+	cout << n << "->>>";
+	cout << check.size() << endl;
+	// for(auto k : check){
+	// 	cout << k << endl;
+	// }
 }
 
 int32_t main (){

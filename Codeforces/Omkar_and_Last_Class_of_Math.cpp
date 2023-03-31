@@ -73,6 +73,10 @@ int gcd (int a, int b) { return a ? gcd (b % a, a) : b; }
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
+int lcm (int a, int b) { return (a * b) / gcd(a, b) ;}
+
+//--------------------------------------------------------------------------------------------------------------------------------------
+
 uint nCr(int n, int r, int p=MOD){     // faster calculation..
     if (n < r)
         return 0;
@@ -100,39 +104,39 @@ template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a)
 
 void Solve(){
 	int n; cin >> n;
-	vpp v(n);
 
-	for(int i = 0; i < n; i++){
-		cin >> v[i].first;
-	}    
-
-	int ones = 0;
-	int zeroes = 0;
-
-	for(int i = 0; i < n; i++){
-		cin >> v[i].second;
-		if(v[i].second == 1){
-			ones++;
-		}else{
-			zeroes++;
-		}
-	}
-
-	bool flag = true;
-	int minm = INT_MAX;
-
-	for(int i = 0; i < n - 1; i++){
-		if(v[i].first > v[i+1].first){
-			flag = false;
-		}
-	}
-	// cout << zeroes << "   " << ones << " ";
-	if(flag == true || (zeroes && ones)){
-		cout << "YES" << endl;
+	vector<int> divisors;
+	if(n == 2){
+		cout << "1 1" << endl;
 		return;
 	}
+	if(n == 3){
+		cout << "1 2" << endl;
+		return;
+	}
+	for(int i = 2; i <= sqrt(n); i++){
+		if(n / i == i){
+			divisors.push_back(n / i);
+		}else if(n % i == 0){
+			divisors.push_back(i);
+			divisors.push_back(n / i);
+		}
+	}    
 
-	cout << "NO" << endl;
+	srt(divisors);
+
+	int last = divisors.size();
+	
+	int ans = n-1;
+	int first = 1;
+	for(int i = 0; i < last; i++){
+		if(lcm(divisors[i], n - divisors[i]) < ans){
+			ans = lcm(divisors[i], n - divisors[i]);
+			first = divisors[i];
+		}
+	}
+
+	cout << first << " " << n - first << endl;
 }
 
 int32_t main (){

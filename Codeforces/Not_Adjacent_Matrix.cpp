@@ -63,6 +63,11 @@ uint power(int x, int y, int p =  MOD){
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
+int toInt(string s) {int res; stringstream ss; ss<<s; ss>>res; return res; }
+string toString(int n) { stringstream ss; ss<<n; return ss.str(); }
+
+//--------------------------------------------------------------------------------------------------------------------------------------
+
 uint modInverse(int n, int p=MOD){       // using fermats little thm. [p needs to be prime which is mostly the case as mod value generally is 1e9+7]
     return power(n, p - 2, p);
 }
@@ -70,6 +75,7 @@ uint modInverse(int n, int p=MOD){       // using fermats little thm. [p needs t
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 int gcd (int a, int b) { return a ? gcd (b % a, a) : b; }
+int lcm (int a, int b) {return (a*b) / gcd(a, b);}
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
@@ -100,39 +106,50 @@ template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a)
 
 void Solve(){
 	int n; cin >> n;
-	vpp v(n);
+	vector<vector<int>> ans(n);
 
-	for(int i = 0; i < n; i++){
-		cin >> v[i].first;
-	}    
-
-	int ones = 0;
-	int zeroes = 0;
-
-	for(int i = 0; i < n; i++){
-		cin >> v[i].second;
-		if(v[i].second == 1){
-			ones++;
-		}else{
-			zeroes++;
-		}
+	int start = 0;
+	if(n == 1){
+		cout << 1 << endl;
+		return;
 	}
-
-	bool flag = true;
-	int minm = INT_MAX;
-
-	for(int i = 0; i < n - 1; i++){
-		if(v[i].first > v[i+1].first){
-			flag = false;
-		}
-	}
-	// cout << zeroes << "   " << ones << " ";
-	if(flag == true || (zeroes && ones)){
-		cout << "YES" << endl;
+	if(n == 2){
+		cout << "-1" << endl;
 		return;
 	}
 
-	cout << "NO" << endl;
+	for(int i = 0; i < n / 2; i++){
+		start++;
+		vector<int> flag;
+		for(int j = start; j <= n * n; j+=n){
+			flag.push_back(j);
+		}
+		ans[i] = (flag);
+		start++;
+		flag.clear();
+		for(int j = start; j <= n * n; j+=n){
+			flag.push_back(j);
+		}
+		ans[n-i-1] = (flag);
+	}    
+
+	if(n % 2){
+		start++;
+		vector<int> flag;
+		for(int j = start; j <= n * n; j+=n){
+			flag.push_back(j);
+		}
+		ans[n/2] = (flag);
+		swap(ans[0][0], ans[n/2][n/2]);
+	}
+	reverse(ans[n/2].begin(), ans[n/2].end());
+	
+
+	for(int i = 0; i < n; i++){
+		cout << ans[i] << endl;
+	}
+
+	// cout << endl;
 }
 
 int32_t main (){

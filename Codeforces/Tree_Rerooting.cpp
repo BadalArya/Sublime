@@ -98,47 +98,59 @@ template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a)
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
+vector<int> res, countNode;
+
+void populate(int source, vvi &graph, int parent = -1){
+	countNode[source] = 1;
+	for(auto ch : graph[source]){
+		if(ch == parent){
+			continue;
+		}
+
+		populate(ch, graph, source);
+		countNode[source] = countNode[ch] + countNode[source];
+		res[source] += res[ch] + countNode[ch];
+	}
+}
+
+void dfs(int source, vvi &graph, int parent = -1){
+	int n = graph.size() - 1;
+	if(parent != -1){
+		res[source] = res[parent] - countNode[source] + (n - countNode[source]);
+	}
+	for(auto ch : graph[source]){
+		if(ch == parent){
+			continue;
+		}
+		dfs(ch, graph, source);
+	}
+}
+
 void Solve(){
 	int n; cin >> n;
-	vpp v(n);
+	vvi graph(n+1);
+	res.assign(n+1, 0);
+	countNode.assign(n+1, 0);
 
-	for(int i = 0; i < n; i++){
-		cin >> v[i].first;
-	}    
-
-	int ones = 0;
-	int zeroes = 0;
-
-	for(int i = 0; i < n; i++){
-		cin >> v[i].second;
-		if(v[i].second == 1){
-			ones++;
-		}else{
-			zeroes++;
-		}
+	int edges = n - 1;
+	for(int i = 0; i < edges; i++){
+		int x, y; cin >> x >> y;
+		graph[x].push_back(y);
+		graph[y].push_back(x);
 	}
-
-	bool flag = true;
-	int minm = INT_MAX;
-
-	for(int i = 0; i < n - 1; i++){
-		if(v[i].first > v[i+1].first){
-			flag = false;
-		}
+	populate(1, graph);
+	dfs(1, graph);
+	// cout << countNode << endl;
+	// cout << res << endl;
+	for(int i = 1; i <= n; i++){
+		cout << res[i] << " ";
 	}
-	// cout << zeroes << "   " << ones << " ";
-	if(flag == true || (zeroes && ones)){
-		cout << "YES" << endl;
-		return;
-	}
-
-	cout << "NO" << endl;
 }
 
 int32_t main (){
     Badal;
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     while (tc--){
         Solve();
     }

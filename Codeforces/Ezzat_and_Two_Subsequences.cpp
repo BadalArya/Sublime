@@ -27,7 +27,7 @@ using namespace std;
 
 #define MOD 1e9+7
 #define Badal cin.sync_with_stdio(false); cin.tie(0); cout.tie(0)
-#define int long long int
+#define int double
 #define uint unsigned long long
 #define vi vector<int>
 #define vvi vector<vi >
@@ -46,47 +46,53 @@ using namespace std;
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
-uint power(int x, int y, int p =  MOD){
-    unsigned long long res = 1;
+// uint power(int x, int y, int p =  MOD){
+//     unsigned long long res = 1;
     
-    x = x % p;
-    while (y > 0){
+//     x = x % p;
+//     while (y > 0){
         
-        if (y & 1)
-            res = (res * x) % p;
+//         if (y & 1)
+//             res = (res * x) % p;
         
-        y = y >> 1;
-        x = (x * x) % p;
-    }
-    return res;
-}
+//         y = y >> 1;
+//         x = (x * x) % p;
+//     }
+//     return res;
+// }
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
-uint modInverse(int n, int p=MOD){       // using fermats little thm. [p needs to be prime which is mostly the case as mod value generally is 1e9+7]
-    return power(n, p - 2, p);
-}
+// int toInt(string s) {int res; stringstream ss; ss<<s; ss>>res; return res; }
+// string toString(int n) { stringstream ss; ss<<n; return ss.str(); }
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
-int gcd (int a, int b) { return a ? gcd (b % a, a) : b; }
+// uint modInverse(int n, int p=MOD){       // using fermats little thm. [p needs to be prime which is mostly the case as mod value generally is 1e9+7]
+//     return power(n, p - 2, p);
+// }
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
-uint nCr(int n, int r, int p=MOD){     // faster calculation..
-    if (n < r)
-        return 0;
+// int gcd (int a, int b) { return a ? gcd (b % a, a) : b; }
+// int lcm (int a, int b) {return (a*b) / gcd(a, b);}
+
+//--------------------------------------------------------------------------------------------------------------------------------------
+
+// uint nCr(int n, int r, int p=MOD){     // faster calculation..
+//     if (n < r)
+//         return 0;
     
-    if (r == 0)
-        return 1;
+//     if (r == 0)
+//         return 1;
     
-    vector<int> fac(n+1,0);
-    fac[0] = 1;
-    for (int i = 1; i <= n; i++)
-        fac[i] = (fac[i - 1] * i) % p;
+//     vector<int> fac(n+1,0);
+//     fac[0] = 1;
+//     for (int i = 1; i <= n; i++)
+//         fac[i] = (fac[i - 1] * i) % p;
     
-    return (fac[n] * modInverse(fac[r], p) % p * modInverse(fac[n - r], p) % p) % p;
-}
+//     return (fac[n] * modInverse(fac[r], p) % p * modInverse(fac[n - r], p) % p) % p;
+// }
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
@@ -100,39 +106,15 @@ template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a)
 
 void Solve(){
 	int n; cin >> n;
-	vpp v(n);
-
-	for(int i = 0; i < n; i++){
-		cin >> v[i].first;
-	}    
-
-	int ones = 0;
-	int zeroes = 0;
-
-	for(int i = 0; i < n; i++){
-		cin >> v[i].second;
-		if(v[i].second == 1){
-			ones++;
-		}else{
-			zeroes++;
-		}
-	}
-
-	bool flag = true;
-	int minm = INT_MAX;
-
+	vi a(n);
+	cin >> a;
+	srt(a);
+	cout << fixed << setprecision(12);
+	int sum = 0;    
 	for(int i = 0; i < n - 1; i++){
-		if(v[i].first > v[i+1].first){
-			flag = false;
-		}
+		sum += a[i];
 	}
-	// cout << zeroes << "   " << ones << " ";
-	if(flag == true || (zeroes && ones)){
-		cout << "YES" << endl;
-		return;
-	}
-
-	cout << "NO" << endl;
+	cout << (sum) / (n - 1) + a[n-1] << endl;
 }
 
 int32_t main (){

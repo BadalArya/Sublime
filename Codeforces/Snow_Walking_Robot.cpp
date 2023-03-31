@@ -63,6 +63,11 @@ uint power(int x, int y, int p =  MOD){
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
+int toInt(string s) {int res; stringstream ss; ss<<s; ss>>res; return res; }
+string toString(int n) { stringstream ss; ss<<n; return ss.str(); }
+
+//--------------------------------------------------------------------------------------------------------------------------------------
+
 uint modInverse(int n, int p=MOD){       // using fermats little thm. [p needs to be prime which is mostly the case as mod value generally is 1e9+7]
     return power(n, p - 2, p);
 }
@@ -70,6 +75,7 @@ uint modInverse(int n, int p=MOD){       // using fermats little thm. [p needs t
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 int gcd (int a, int b) { return a ? gcd (b % a, a) : b; }
+int lcm (int a, int b) {return (a*b) / gcd(a, b);}
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
@@ -99,40 +105,56 @@ template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a)
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 void Solve(){
-	int n; cin >> n;
-	vpp v(n);
+	string s; cin >> s;
+	int down = 0;
+	int up = 0;
+	int left = 0;
+	int right = 0;
+	int n = s.size();
 
 	for(int i = 0; i < n; i++){
-		cin >> v[i].first;
+		if(s[i] == 'D'){
+			down++;
+		}else if(s[i] == 'R'){
+			right++;
+		}else if(s[i] == 'L'){
+			left++;
+		}else{
+			up++;
+		}
 	}    
 
-	int ones = 0;
-	int zeroes = 0;
-
-	for(int i = 0; i < n; i++){
-		cin >> v[i].second;
-		if(v[i].second == 1){
-			ones++;
-		}else{
-			zeroes++;
-		}
+	// cout << (min(left, right) + min(up, down)) * 2 << endl;
+	int x = min(left, right);
+	int y = min(up, down);
+	if(x == 0 && y == 0){
+		cout << 0 << endl;
+		return;
 	}
-
-	bool flag = true;
-	int minm = INT_MAX;
-
-	for(int i = 0; i < n - 1; i++){
-		if(v[i].first > v[i+1].first){
-			flag = false;
-		}
+	if(x == 0){
+		cout << 2 << endl << "UD" << endl;
+		return;
 	}
-	// cout << zeroes << "   " << ones << " ";
-	if(flag == true || (zeroes && ones)){
-		cout << "YES" << endl;
+	if(y == 0){
+		cout << 2 << endl << "LR" << endl;
 		return;
 	}
 
-	cout << "NO" << endl;
+	cout << (x+y)*2 << endl;
+
+	for(int i = 0; i < x; i++){
+		cout << "L";
+	}
+	for(int i = 0; i < y; i++){
+		cout << "U";
+	}
+	for(int i = 0; i < x; i++){
+		cout << "R";
+	}
+	for(int i = 0; i < y; i++){
+		cout << "D";
+	}
+	cout << endl;
 }
 
 int32_t main (){

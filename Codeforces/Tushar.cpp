@@ -63,9 +63,18 @@ uint power(int x, int y, int p =  MOD){
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
+int toInt(string s) {int res; stringstream ss; ss<<s; ss>>res; return res; }
+string toString(int n) { stringstream ss; ss<<n; return ss.str(); }
+
+//--------------------------------------------------------------------------------------------------------------------------------------
+
 uint modInverse(int n, int p=MOD){       // using fermats little thm. [p needs to be prime which is mostly the case as mod value generally is 1e9+7]
     return power(n, p - 2, p);
 }
+
+//--------------------------------------------------------------------------------------------------------------------------------------
+
+int gcd (int a, int b) { return a ? gcd (b % a, a) : b; }
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
@@ -94,66 +103,38 @@ template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a)
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
-// void buildTree(vector<int> &arr, vector<int> &tree, int start, int end, int treeNode){
-// 	if(start == end){
-// 		tree[treeNode] = arr[start];
-// 		return;
-// 	}
-
-// 	int mid = (start + end) / 2;
-
-// 	buildTree(arr, tree, start, mid, 2*treeNode);
-// 	buildTree(arr, tree, mid + 1, end, 2 * treeNode + 1);
-
-// 	tree[treeNode] = (tree[2 * treeNode]) * (tree[2 * treeNode + 1]);
-// }
-
-// int query(vector<int> &tree, int start, int end, int treeNode, int left, int right, int mod){
-
-// }
-
 void Solve(){
-	int n; cin >> n;
-	string s = "";
-	int flag = n;
-	while(flag){
-		s += (flag % 2) + '0';
-		flag /= 2;
+	string s, t;
+	cin >> s >> t;
+	int n = s.size();
+	for(int i = 0; i < n; i++){
+		if(s[i] >= 'A' && s[i] <= 'Z'){
+			s[i] += 32;
+		}
+		if(t[i] >= 'A' && t[i] <= 'Z'){
+			t[i] += 32;
+		}
 	}    
-	vector<int> goodArray;
 
-	for(int i = 0; i < s.size(); i++){
-		if(s[i] == '1'){
-			goodArray.push_back(pow(2, i));
-		}
-	}
-	int size = goodArray.size();
-
-	for(int i = 1; i < size; i++){
-		goodArray[i] = (goodArray[i - 1] * goodArray[i]) ;
+	if(s == t){
+		cout << 0 << endl;
+	}else if(s > t){
+		cout << 1 << endl;
+	}else{
+		cout
 	}
 
-	for(int i = 0; i < queries.size(); i++){
-		int left = queries[i][0];
-		int right = queries[i][1];
-		int mod = queries[i][2];
-		if(left == 1){
-			cout << goodArray[i] % mod << endl;
-		}
-		else{
-			cout << (goodArray[right - 1] / goodArray[left - 1]) 
-		}
-	}
-
-	vector<int> tree(4 * size, 1);
-
-	// buildTree(goodArray, tree, 0 , size - 1, 1);
+	10;
+	2, 8 -> 10;
+	1, ,1, 10
+	2, 4, 4->10
+	2, 2,2 ,4
 }
 
 int32_t main (){
     Badal;
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     while (tc--){
         Solve();
     }

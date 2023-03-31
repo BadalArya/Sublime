@@ -98,41 +98,30 @@ template<typename typC> ostream &operator<<(ostream &cout,const vector<typC> &a)
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
-void Solve(){
-	int n; cin >> n;
-	vpp v(n);
-
-	for(int i = 0; i < n; i++){
-		cin >> v[i].first;
-	}    
-
-	int ones = 0;
-	int zeroes = 0;
-
-	for(int i = 0; i < n; i++){
-		cin >> v[i].second;
-		if(v[i].second == 1){
-			ones++;
-		}else{
-			zeroes++;
-		}
-	}
-
-	bool flag = true;
-	int minm = INT_MAX;
-
-	for(int i = 0; i < n - 1; i++){
-		if(v[i].first > v[i+1].first){
-			flag = false;
-		}
-	}
-	// cout << zeroes << "   " << ones << " ";
-	if(flag == true || (zeroes && ones)){
-		cout << "YES" << endl;
+void replace(string &s){
+	if(s.find("pi") == -1){
 		return;
 	}
 
-	cout << "NO" << endl;
+	int n = s.size();
+	int i = s.find("pi");
+	if(i >= 0 && i < n){
+		string part1 = s.substr(0, i);
+		string part2 = s.substr(i+2, n - i - 2);
+		s = part1 + "3.14" + part2;
+	}else{
+		return;
+	}
+
+	replace(s);
+}
+
+void Solve(){
+	string s; cin >> s;
+	cout << s.size() << endl;
+	replace(s);    
+
+	cout << s << endl;
 }
 
 int32_t main (){
